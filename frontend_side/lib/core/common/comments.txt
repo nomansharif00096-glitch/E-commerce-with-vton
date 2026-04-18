@@ -1,0 +1,31 @@
+// To enable developer's mode
+command: start ms-settings:developers
+
+// To add a flutter dependency
+command: flutter pub add [package-name]
+
+// To add a flutter dev-dependency
+command: flutter pub add --dev
+
+// To generate freezed classes (to avoid writing boilerplate)
+command: dart run build_runner build -d 
+
+
+BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              // ignore: unrelated_type_equality_checks
+              final isDark = state.themeData == ThemeMode.dark;
+              return SwitchListTile(
+                title: Text(isDark ? "Dark Mode" : "Light Mode"),
+                value: isDark,
+                onChanged: (_) {
+                  final currentTheme =
+                      context.read<ThemeBloc>().state.themeData.brightness;
+                  themeBloc.add(ChangeThemeEvent(
+                      currentTheme == Brightness.light
+                          ? AppTheme.dark
+                          : AppTheme.light));
+                },
+              );
+            },
+          ),
